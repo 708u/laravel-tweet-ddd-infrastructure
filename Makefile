@@ -4,7 +4,7 @@ ifeq (tf,$(firstword $(MAKECMDGOALS)))
   $(eval $(RUN_ARGS):;@:)
 endif
 tf: ## Execute terraform commands with arguments.
-	docker-compose exec --rm terraform $(RUN_ARGS)
+	docker-compose run --rm terraform $(RUN_ARGS)
 
 .PHONY: help
 help: ## Display all make commands with help.
