@@ -7,10 +7,30 @@ provider "aws" {
   region     = var.region
 }
 
-resource "aws_vpc" "laravel-tweet-ddd" {
+resource "aws_vpc" "laravel_tweet_ddd" {
   cidr_block = "10.0.0.0/16"
   tags = {
     Name = "laravel-tweet-ddd-vpc-2"
+  }
+}
+
+resource "aws_subnet" "laravel_tweet_ddd_public_subnet_1a" {
+  vpc_id            = aws_vpc.laravel_tweet_ddd.id
+  availability_zone = "ap-northeast-1a"
+  cidr_block = cidrsubnet(aws_vpc.laravel_tweet_ddd.cidr_block, 8, 10)
+
+  tags = {
+    Name = "laravel-tweet-ddd-public-subnet-1a"
+  }
+}
+
+resource "aws_subnet" "laravel_tweet_ddd_private_subnet_1a" {
+  vpc_id            = aws_vpc.laravel_tweet_ddd.id
+  availability_zone = "ap-northeast-1a"
+  cidr_block = cidrsubnet(aws_vpc.laravel_tweet_ddd.cidr_block, 8, 20)
+
+  tags = {
+    Name = "laravel-tweet-ddd-private-subnet-1a"
   }
 }
 
