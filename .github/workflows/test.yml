@@ -4,11 +4,16 @@ on: [push]
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_access_key: ${{ secrets.TERRAFORM_ACCESS_KEY }}
+      TF_VAR_secret_key: ${{ secrets.TERRAFORM_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.12.24
+
+      - run: terraform init
 
       # Determine if all tf files are formatted
       - run: terraform fmt -check
