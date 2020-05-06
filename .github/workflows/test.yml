@@ -10,5 +10,8 @@ jobs:
         with:
           terraform_version: 0.12.24
 
-      # all tf files are formatted
+      # Determine if all tf files are formatted
       - run: terraform fmt -check
+
+      # Determine if terraform can apply plan
+      - run: terraform plan
