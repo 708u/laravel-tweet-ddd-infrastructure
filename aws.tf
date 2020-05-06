@@ -7,30 +7,30 @@ provider "aws" {
   region     = var.region
 }
 
-resource "aws_vpc" "laravel_tweet_ddd" {
+resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
   tags = {
-    Name = "laravel-tweet-ddd-vpc-2"
+    Name = "${var.project}-vpc-2"
   }
 }
 
-resource "aws_subnet" "laravel_tweet_ddd_public_subnet_1a" {
-  vpc_id            = aws_vpc.laravel_tweet_ddd.id
+resource "aws_subnet" "public_subnet_1a" {
+  vpc_id            = aws_vpc.main.id
   availability_zone = "ap-northeast-1a"
-  cidr_block = cidrsubnet(aws_vpc.laravel_tweet_ddd.cidr_block, 8, 10)
+  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 10)
 
   tags = {
-    Name = "laravel-tweet-ddd-public-subnet-1a"
+    Name = "${var.project}-public-subnet-1a"
   }
 }
 
-resource "aws_subnet" "laravel_tweet_ddd_private_subnet_1a" {
-  vpc_id            = aws_vpc.laravel_tweet_ddd.id
+resource "aws_subnet" "private_subnet_1a" {
+  vpc_id            = aws_vpc.main.id
   availability_zone = "ap-northeast-1a"
-  cidr_block = cidrsubnet(aws_vpc.laravel_tweet_ddd.cidr_block, 8, 20)
+  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, 20)
 
   tags = {
-    Name = "laravel-tweet-ddd-private-subnet-1a"
+    Name = "${var.project}-private-subnet-1a"
   }
 }
 
@@ -38,6 +38,6 @@ resource "aws_subnet" "laravel_tweet_ddd_private_subnet_1a" {
 #     ami = "ami-0f310fced6141e627"
 #     instance_type = "t2.micro"
 #     tags = {
-#         Name = "laravel-tweet-ddd-web-2"
+#         Name = "${var.project}-web"
 #     }
 # }
