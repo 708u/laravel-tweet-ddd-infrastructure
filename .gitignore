@@ -1,4 +1,11 @@
-**/.terraform/*
-
 .env
+
+# local terraform dir.
+**/.terraform/*
+terraform.tfvars
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
 crash.log
