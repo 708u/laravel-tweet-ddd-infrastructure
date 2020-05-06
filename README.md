@@ -3,7 +3,11 @@
 ## Overview
 
 - 以下アプリケーションのインフラ構成をコードで管理するリポジトリ
-    - https://github.com/naoyaUda/laravel-tweet-ddd-infrastructure
+    - https://github.com/naoyaUda/laravel-tweet-ddd
+
+## Environments
+
+- terraform 0.12.14
 
 ## Installation
 
