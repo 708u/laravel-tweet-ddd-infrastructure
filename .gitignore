@@ -1,1 +1,4 @@
 **/.terraform/*
+
+.env
+crash.log
