@@ -1,3 +1,5 @@
+variable "private_ip" {}
+
 resource "aws_security_group" "web" {
   name   = "${var.project}-web"
   vpc_id = aws_vpc.main.id
@@ -6,7 +8,7 @@ resource "aws_security_group" "web" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.default_route]
+    cidr_blocks = [var.private_ip]
   }
 
   ingress {
