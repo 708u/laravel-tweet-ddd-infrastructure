@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "main" {
-  name = "laravel-twee-ddd.worktest"
+  name = var.domain
 }
 
 resource "aws_route53_record" "a_record" {

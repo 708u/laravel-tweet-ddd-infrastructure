@@ -9,3 +9,9 @@ variable "region" {
 variable "default_route" {
   default = "0.0.0.0/0"
 }
+
+variable "domain" {
+  description = "Domain name maneged in Route53."
+  type        = string
+  default     = "laravel-tweet-ddd.work"
+}
