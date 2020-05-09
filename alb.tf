@@ -1,3 +1,11 @@
+resource "aws_lb" "main" {
+  load_balancer_type = "application"
+  name = "${var.project}-alb"
+
+  security_groups = [aws_security_group.alb.id]
+  subnets = [aws_subnet.public_subnet_1a.id, aws_subnet.public_subnet_1c.id]
+}
+
 resource "aws_security_group" "alb" {
   name        = "${var.project}-alb"
   description = "${var.project}-alb"

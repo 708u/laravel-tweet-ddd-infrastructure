@@ -15,6 +15,16 @@ resource "aws_subnet" "public_subnet_1a" {
   }
 }
 
+resource "aws_subnet" "public_subnet_1c" {
+  vpc_id            = aws_vpc.main.id
+  availability_zone = "${var.region}c"
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 11)
+
+  tags = {
+    Name = "${var.project}-public-subnet-1c"
+  }
+}
+
 resource "aws_subnet" "private_subnet_1a" {
   vpc_id            = aws_vpc.main.id
   availability_zone = "${var.region}a"
