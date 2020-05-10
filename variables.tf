@@ -1,13 +1,19 @@
 variable "project" {
-  default = "Laravel-tweet-ddd"
+  description = "Project name"
+  type        = string
+  default     = "laravel-tweet-ddd"
 }
 
 variable "region" {
-  default = "ap-northeast-1"
+  description = "Default region"
+  type        = string
+  default     = "ap-northeast-1"
 }
 
 variable "default_route" {
-  default = "0.0.0.0/0"
+  description = "Default route"
+  type        = string
+  default     = "0.0.0.0/0"
 }
 
 variable "domain" {

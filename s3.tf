@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "main" {
-  bucket = "laravel-tweet-ddd-public"
+  bucket = "${var.project}-public"
   acl    = "private"
 
   versioning {

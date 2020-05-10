@@ -61,4 +61,6 @@ resource "aws_lb_listener" "https" {
       message_body = "ok"
     }
   }
+
+  depends_on = [aws_acm_certificate.main]
 }
