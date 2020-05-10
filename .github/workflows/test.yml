@@ -8,7 +8,7 @@ jobs:
       TF_VAR_access_key: ${{ secrets.TERRAFORM_ACCESS_KEY }}
       TF_VAR_secret_key: ${{ secrets.TERRAFORM_SECRET_ACCESS_KEY }}
       TF_VAR_db_password: ${{ secrets.TERRAFORM_DB_PASSWORD }}
-      TF_VAR_private_id: ${{ secrets.TERRAFORM_PRIVATE_IP }}
+      TF_VAR_private_ip: ${{ secrets.TERRAFORM_PRIVATE_IP }}
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
