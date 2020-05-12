@@ -45,6 +45,26 @@ resource "aws_subnet" "private_db_1c" {
   }
 }
 
+resource "aws_subnet" "private_elasticache_1a" {
+  vpc_id            = aws_vpc.main.id
+  availability_zone = "${var.region}a"
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 30)
+
+  tags = {
+    Name = "${var.project}-private-subnet-elasticache-1a"
+  }
+}
+
+resource "aws_subnet" "private_elasticache_1c" {
+  vpc_id            = aws_vpc.main.id
+  availability_zone = "${var.region}c"
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, 31)
+
+  tags = {
+    Name = "${var.project}-private-subnet-elasticache-1c"
+  }
+}
+
 resource "aws_internet_gateway" "main_igw" {
   vpc_id = aws_vpc.main.id
   tags = {
