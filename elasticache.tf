@@ -1,23 +1,3 @@
-resource "aws_security_group" "private_elasticache" {
-  name        = "${var.project}-elasticache"
-  description = "${var.project}-elasticache"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    from_port       = 6379
-    to_port         = 6379
-    protocol        = "tcp"
-    security_groups = [aws_security_group.web.id]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [var.default_route]
-  }
-}
-
 resource "aws_elasticache_cluster" "main" {
   cluster_id           = "${var.project}-redis"
   engine               = "redis"

@@ -1,25 +1,5 @@
 variable "db_password" {}
 
-resource "aws_security_group" "private_db" {
-  name        = "${var.project}-db"
-  description = "${var.project}-db"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [aws_security_group.web.id]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [var.default_route]
-  }
-}
-
 resource "aws_db_subnet_group" "private_db" {
   name       = "${var.project}-db-group"
   subnet_ids = [aws_subnet.private_db_1a.id, aws_subnet.private_db_1c.id]
