@@ -11,6 +11,13 @@ resource "aws_security_group" "private_db" {
     protocol        = "tcp"
     security_groups = [aws_security_group.web.id]
   }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.default_route]
+  }
 }
 
 resource "aws_db_subnet_group" "private_db" {
