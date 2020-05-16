@@ -1,3 +1,5 @@
+variable "private_ip" {}
+
 variable "project" {
   description = "Project name"
   type        = string
