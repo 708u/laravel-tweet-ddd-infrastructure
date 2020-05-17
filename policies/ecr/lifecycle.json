@@ -1,0 +1,16 @@
+{
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Leave latest 2 images",
+            "selection": {
+                "tagStatus": "any",
+                "countType": "imageCountMoreThan",
+                "countNumber": 2
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+}
