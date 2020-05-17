@@ -13,6 +13,6 @@ resource "aws_instance" "main" {
   }
 
   tags = {
-      Name = "${var.project}-app"
+    Name = "${var.project}-app"
   }
 }
