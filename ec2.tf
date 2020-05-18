@@ -1,5 +1,5 @@
 resource "aws_instance" "main" {
-  ami                         = "ami-0e37e42dff65024ae"
+  ami                         = "ami-03179588b2f59f257"
   instance_type               = "t2.small"
   monitoring                  = true
   subnet_id                   = aws_subnet.public_subnet_1a.id
