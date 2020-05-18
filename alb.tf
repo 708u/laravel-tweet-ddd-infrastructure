@@ -6,6 +6,23 @@ resource "aws_lb" "main" {
   subnets         = [aws_subnet.public_subnet_1a.id, aws_subnet.public_subnet_1c.id]
 }
 
+resource "aws_lb_target_group" "https" {
+  name     = "${var.project}-alb-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.main.id
+
+  health_check {
+    interval            = 30
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = 10
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+  }
+}
+
 resource "aws_lb_listener" "https" {
   port     = 443
   protocol = "HTTPS"
@@ -14,13 +31,8 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.main.arn
 
   default_action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/plain"
-      status_code  = "200"
-      message_body = "ok"
-    }
+    target_group_arn = aws_lb_target_group.https.arn
+    type             = "forward"
   }
 
   depends_on = [aws_acm_certificate.main]
