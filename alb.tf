@@ -1,12 +1,13 @@
 resource "aws_lb" "main" {
-  load_balancer_type = "application"
   name               = "${var.project}-alb"
+  load_balancer_type = "application"
+  internal = false
 
   security_groups = [aws_security_group.alb.id]
   subnets         = [aws_subnet.public_subnet_1a.id, aws_subnet.public_subnet_1c.id]
 }
 
-resource "aws_lb_target_group" "https" {
+resource "aws_lb_target_group" "web" {
   name     = "${var.project}-alb-tg"
   port     = 80
   protocol = "HTTP"
@@ -15,7 +16,7 @@ resource "aws_lb_target_group" "https" {
   health_check {
     interval            = 30
     path                = "/"
-    port                = "traffic-port"
+    port                = 80
     protocol            = "HTTP"
     timeout             = 10
     healthy_threshold   = 3
@@ -31,7 +32,7 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = aws_lb.main.arn
 
   default_action {
-    target_group_arn = aws_lb_target_group.https.arn
+    target_group_arn = aws_lb_target_group.web.arn
     type             = "forward"
   }
 
