@@ -1,6 +1,6 @@
 resource "aws_instance" "main" {
   ami                         = "ami-03179588b2f59f257"
-  instance_type               = "t2.small"
+  instance_type               = "t2.micro"
   monitoring                  = true
   subnet_id                   = aws_subnet.public_subnet_1a.id
   iam_instance_profile        = aws_iam_instance_profile.ecs_instance_profile.name
