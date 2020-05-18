@@ -8,12 +8,18 @@ resource "aws_ecs_service" "app_service" {
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = 1
   launch_type     = "EC2"
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.https.arn
+    container_name   = "app"
+    container_port   = 9000
+  }
 }
 
 resource "aws_ecs_task_definition" "app" {
-  family                = "${var.project}-app"
-  task_role_arn         = aws_iam_role.ecs_task_role.arn
-  network_mode          = "bridge"
+  family        = "${var.project}-app"
+  task_role_arn = aws_iam_role.ecs_task_role.arn
+  network_mode  = "bridge"
 
   container_definitions = <<EOF
 [
