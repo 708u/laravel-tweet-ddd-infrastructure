@@ -6,3 +6,9 @@ services:
     working_dir: "/workdir"
     volumes:
       - ".:/workdir"
+
+  awscli:
+    image: amazon/aws-cli:latest
+    working_dir: "/workdir"
+    volumes:
+      - ".:/workdir"
