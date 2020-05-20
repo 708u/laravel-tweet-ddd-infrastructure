@@ -1,4 +1,5 @@
 .env
+.aws/
 
 # local terraform dir.
 **/.terraform/*

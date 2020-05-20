@@ -6,6 +6,14 @@ endif
 tf: ## Execute terraform commands with arguments.
 	docker-compose run --rm terraform $(RUN_ARGS)
 
+.PHONY: aws
+ifeq (aws,$(firstword $(MAKECMDGOALS)))
+  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(RUN_ARGS):;@:)
+endif
+aws: ## Execute terraform commands with arguments.
+	docker-compose run --rm awscli $(RUN_ARGS)
+
 .PHONY: plan
 plan: ## Execute terraform plan.
 	docker-compose run --rm terraform plan
