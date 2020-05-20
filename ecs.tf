@@ -9,33 +9,86 @@ resource "aws_ecs_service" "app_service" {
   desired_count   = 1
   launch_type     = "EC2"
 
+  network_configuration {
+    security_groups = [aws_security_group.web.id]
+    subnets         = [aws_subnet.public_subnet_1a.id]
+  }
+
   load_balancer {
     target_group_arn = aws_lb_target_group.web.arn
-    container_name   = "app"
-    container_port   = 9000
+    container_name   = "nginx"
+    container_port   = 80
   }
 }
 
 resource "aws_ecs_task_definition" "app" {
   family        = "${var.project}-app"
   task_role_arn = aws_iam_role.ecs_task_role.arn
-  network_mode  = "bridge"
+  network_mode  = "awsvpc"
 
   container_definitions = <<EOF
 [
   {
     "name": "app",
     "image": "${aws_ecr_repository.app.repository_url}:latest",
-    "cpu": 333,
-    "memoryReservation": 600,
+    "cpu": 400,
+    "memoryReservation": 400,
     "essential": true,
-    "networkMode": "bridge",
+    "networkMode": "awsvpc",
     "portMappings": [
       {
         "containerPort": 9000,
         "hostPort": 9000
       }
-    ]
+    ],
+    "environment": [
+      {
+        "name": "APP_NAME",
+        "value": "${var.project}"
+      },
+      {
+        "name": "APP_ENV",
+        "value": "production"
+      },
+      {
+        "name": "APP_DEBUG",
+        "value": "true"
+      },
+      {
+        "name": "REDIS_HOST",
+        "value": "${aws_elasticache_cluster.main.cache_nodes.0.address}"
+      }
+    ],
+     "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${var.project}-app",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "service"
+      }
+    }
+  },
+  {
+    "name": "nginx",
+    "image": "${aws_ecr_repository.nginx.repository_url}:latest",
+    "cpu": 50,
+    "memoryReservation": 100,
+    "essential": true,
+    "networkMode": "awsvpc",
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${var.project}-nginx",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "service"
+      }
+    }
   }
 ]
 EOF
