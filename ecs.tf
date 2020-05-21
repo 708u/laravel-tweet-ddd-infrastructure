@@ -22,10 +22,10 @@ resource "aws_ecs_service" "app_service" {
 }
 
 resource "aws_ecs_task_definition" "app" {
-  family        = "${var.project}-app"
-  task_role_arn = aws_iam_role.ecs_task_role.arn
+  family             = "${var.project}-app"
+  task_role_arn      = aws_iam_role.ecs_task_role.arn
   execution_role_arn = aws_iam_role.ecs_task_role.arn
-  network_mode  = "awsvpc"
+  network_mode       = "awsvpc"
 
   container_definitions = <<EOF
 [
