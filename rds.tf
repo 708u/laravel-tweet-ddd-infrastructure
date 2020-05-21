@@ -15,7 +15,7 @@ resource "aws_db_instance" "db" {
   instance_class         = "db.t2.micro"
   allocated_storage      = 20
   name                   = replace(var.project, "-", "_")
-  username               = "admin"
+  username               = replace(var.project, "-", "_")
   password               = var.db_password
   vpc_security_group_ids = [aws_security_group.private_db.id]
   db_subnet_group_name   = aws_db_subnet_group.private_db.name

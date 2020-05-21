@@ -32,8 +32,8 @@ resource "aws_ecs_task_definition" "app" {
   {
     "name": "app",
     "image": "${aws_ecr_repository.app.repository_url}:latest",
-    "cpu": 333,
-    "memoryReservation": 400,
+    "cpu": 300,
+    "memoryReservation": 300,
     "essential": true,
     "networkMode": "awsvpc",
     "portMappings": [
@@ -44,10 +44,6 @@ resource "aws_ecs_task_definition" "app" {
     ],
     "environment": [
       {
-        "name": "APP_NAME",
-        "value": "${var.project}"
-      },
-      {
         "name": "APP_ENV",
         "value": "production"
       },
@@ -56,14 +52,34 @@ resource "aws_ecs_task_definition" "app" {
         "value": "true"
       },
       {
+        "name": "APP_NAME",
+        "value": "${var.project}"
+      },
+      {
+        "name": "APP_URL",
+        "value": "https://laravel-tweet-ddd.work"
+      },
+      {
         "name": "REDIS_HOST",
         "value": "${aws_elasticache_cluster.main.cache_nodes.0.address}"
+      },
+      {
+        "name": "REDIS_PASSWORD",
+        "value": "null"
+      },
+      {
+        "name": "REDIS_PORT",
+        "value": "6379"
       }
     ],
     "secrets": [
       {
         "name": "APP_KEY",
         "valueFrom": "/app/key"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "valueFrom": "/db/password"
       }
     ],
     "logConfiguration": {
@@ -78,8 +94,8 @@ resource "aws_ecs_task_definition" "app" {
   {
     "name": "nginx",
     "image": "${aws_ecr_repository.nginx.repository_url}:latest",
-    "cpu": 333,
-    "memoryReservation": 333,
+    "cpu": 50,
+    "memoryReservation": 100,
     "essential": true,
     "networkMode": "awsvpc",
     "portMappings": [
