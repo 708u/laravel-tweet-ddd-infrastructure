@@ -22,3 +22,12 @@ resource "aws_route53_record" "validation" {
   records    = [aws_acm_certificate.main.domain_validation_options.0.resource_record_value]
   ttl        = 60
 }
+
+resource "aws_route53_record" "cdn_validation" {
+  depends_on = [aws_acm_certificate.cdn]
+  zone_id    = aws_route53_zone.main.id
+  name       = aws_acm_certificate.cdn.domain_validation_options.0.resource_record_name
+  type       = "CNAME"
+  records    = [aws_acm_certificate.cdn.domain_validation_options.0.resource_record_value]
+  ttl        = 60
+}
