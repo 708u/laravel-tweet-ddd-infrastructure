@@ -9,6 +9,9 @@ resource "aws_ecs_service" "app_service" {
   desired_count   = 1
   launch_type     = "EC2"
 
+  deployment_minimum_healthy_percent = 0
+  deployment_maximum_percent         = 100
+
   network_configuration {
     security_groups = [aws_security_group.web.id]
     subnets         = [aws_subnet.public_subnet_1a.id]
@@ -90,6 +93,18 @@ resource "aws_ecs_task_definition" "app" {
       {
         "name": "REDIS_PORT",
         "value": "6379"
+      },
+      {
+        "name": "QUEUE_CONNECTION",
+        "value": "redis"
+      },
+      {
+        "name": "CACHE_DRIVER",
+        "value": "redis"
+      },
+      {
+        "name": "TELESCOPE_ENABLED",
+        "value": "false"
       }
     ],
     "secrets": [
