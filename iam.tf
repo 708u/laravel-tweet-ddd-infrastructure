@@ -45,3 +45,15 @@ resource "aws_iam_role" "ecs_task_role" {
   path               = "/"
   assume_role_policy = file("policies/iam/ecs_task_assume_role_policy.json")
 }
+
+resource "aws_iam_policy" "ecs_task_policy" {
+  name        = "ecs-task-policy"
+  path        = "/"
+  description = ""
+  policy      = file("policies/iam/ecs_task_policy.json")
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_role_attach" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = aws_iam_policy.ecs_task_policy.arn
+}
