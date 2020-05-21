@@ -60,6 +60,26 @@ resource "aws_ecs_task_definition" "app" {
         "value": "https://laravel-tweet-ddd.work"
       },
       {
+        "name": "DB_CONNECTION",
+        "value": "mysql"
+      },
+      {
+        "name": "DB_HOST",
+        "value": "${aws_db_instance.db.address}"
+      },
+      {
+        "name": "DB_PORT",
+        "value": "3306"
+      },
+      {
+        "name": "DB_USERNAME",
+        "value": "${replace(var.project, "-", "_")}"
+      },
+      {
+        "name": "DB_DATABASE",
+        "value": "${replace(var.project, "-", "_")}"
+      },
+      {
         "name": "REDIS_HOST",
         "value": "${aws_elasticache_cluster.main.cache_nodes.0.address}"
       },
