@@ -34,7 +34,7 @@ resource "aws_ecs_task_definition" "app" {
 }
 
 data "template_file" "ecs_app_task_definition" {
-  template = "${file("./templates/ecsTaskDefinition/app_task_definition.json")}"
+  template = file("./templates/ecsTaskDefinition/app_task_definition.json")
 
   vars = {
     app_repo_url     = aws_ecr_repository.app.repository_url
@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "migrate" {
 }
 
 data "template_file" "ecs_migrate_task_definition" {
-  template = "${file("./templates/ecsTaskDefinition/app_task_definition.json")}"
+  template = file("./templates/ecsTaskDefinition/app_task_definition.json")
 
   vars = {
     app_repo_url     = aws_ecr_repository.app.repository_url
