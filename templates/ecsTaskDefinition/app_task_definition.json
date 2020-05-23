@@ -1,0 +1,145 @@
+[
+  {
+    "name": "app",
+    "image": "${app_repo_url}:latest",
+    "cpu": 300,
+    "memoryReservation": 300,
+    "essential": true,
+    "networkMode": "${network_mode}",
+    "command": [
+%{if command == "migrate"}
+      "php", "artisan", "migrate", "--force"
+%{ endif }
+    ],
+    "portMappings": [
+      {
+        "containerPort": 9000,
+        "hostPort": 9000
+      }
+    ],
+    "environment": [
+      {
+        "name": "APP_ENV",
+        "value": "production"
+      },
+      {
+        "name": "APP_DEBUG",
+        "value": "true"
+      },
+      {
+        "name": "APP_NAME",
+        "value": "${project}"
+      },
+      {
+        "name": "APP_URL",
+        "value": "https://laravel-tweet-ddd.work"
+      },
+      {
+        "name": "ASSET_URL",
+        "value": "https://cdn.laravel-tweet-ddd.work"
+      },
+      {
+        "name": "DB_CONNECTION",
+        "value": "mysql"
+      },
+      {
+        "name": "DB_HOST",
+        "value": "${db_host}"
+      },
+      {
+        "name": "DB_PORT",
+        "value": "3306"
+      },
+      {
+        "name": "DB_USERNAME",
+        "value": "${db_user_database}"
+      },
+      {
+        "name": "DB_DATABASE",
+        "value": "${db_user_database}"
+      },
+      {
+        "name": "LOG_CHANNEL",
+        "value": "stack"
+      },
+      {
+        "name": "REDIS_HOST",
+        "value": "{redis_host}"
+      },
+      {
+        "name": "REDIS_PASSWORD",
+        "value": "null"
+      },
+      {
+        "name": "REDIS_PORT",
+        "value": "6379"
+      },
+      {
+        "name": "QUEUE_CONNECTION",
+        "value": "redis"
+      },
+      {
+        "name": "CACHE_DRIVER",
+        "value": "file"
+      },
+      {
+        "name": "SESSION_DRIVER",
+        "value": "cookie"
+      },
+      {
+        "name": "SESSION_LIFETIME",
+        "value": "10080"
+      },
+      {
+        "name": "TELESCOPE_ENABLED",
+        "value": "false"
+      },
+      {
+        "name": "BROADCAST_DRIVER",
+        "value": "log"
+      }
+    ],
+    "secrets": [
+      {
+        "name": "APP_KEY",
+        "valueFrom": "/app/key"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "valueFrom": "/db/password"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${project}-app",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "service"
+      }
+    }
+  }
+%{ if nginx_repo_url != ""}
+ ,{
+    "name": "nginx",
+    "image": "${nginx_repo_url}:latest",
+    "cpu": 50,
+    "memoryReservation": 100,
+    "essential": true,
+    "networkMode": "awsvpc",
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${project}-nginx",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "service"
+      }
+    }
+  }
+%{ endif }
+]

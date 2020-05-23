@@ -30,146 +30,22 @@ resource "aws_ecs_task_definition" "app" {
   execution_role_arn = aws_iam_role.ecs_task_role.arn
   network_mode       = "awsvpc"
 
-  container_definitions = <<EOF
-[
-  {
-    "name": "app",
-    "image": "${aws_ecr_repository.app.repository_url}:latest",
-    "cpu": 300,
-    "memoryReservation": 300,
-    "essential": true,
-    "networkMode": "awsvpc",
-    "portMappings": [
-      {
-        "containerPort": 9000,
-        "hostPort": 9000
-      }
-    ],
-    "environment": [
-      {
-        "name": "APP_ENV",
-        "value": "production"
-      },
-      {
-        "name": "APP_DEBUG",
-        "value": "true"
-      },
-      {
-        "name": "APP_NAME",
-        "value": "${var.project}"
-      },
-      {
-        "name": "APP_URL",
-        "value": "https://laravel-tweet-ddd.work"
-      },
-      {
-        "name": "ASSET_URL",
-        "value": "https://cdn.laravel-tweet-ddd.work"
-      },
-      {
-        "name": "DB_CONNECTION",
-        "value": "mysql"
-      },
-      {
-        "name": "DB_HOST",
-        "value": "${aws_db_instance.db.address}"
-      },
-      {
-        "name": "DB_PORT",
-        "value": "3306"
-      },
-      {
-        "name": "DB_USERNAME",
-        "value": "${replace(var.project, "-", "_")}"
-      },
-      {
-        "name": "DB_DATABASE",
-        "value": "${replace(var.project, "-", "_")}"
-      },
-      {
-        "name": "LOG_CHANNEL",
-        "value": "stack"
-      },
-      {
-        "name": "REDIS_HOST",
-        "value": "${aws_elasticache_cluster.main.cache_nodes.0.address}"
-      },
-      {
-        "name": "REDIS_PASSWORD",
-        "value": "null"
-      },
-      {
-        "name": "REDIS_PORT",
-        "value": "6379"
-      },
-      {
-        "name": "QUEUE_CONNECTION",
-        "value": "redis"
-      },
-      {
-        "name": "CACHE_DRIVER",
-        "value": "file"
-      },
-      {
-        "name": "SESSION_DRIVER",
-        "value": "cookie"
-      },
-      {
-        "name": "SESSION_LIFETIME",
-        "value": "10080"
-      },
-      {
-        "name": "TELESCOPE_ENABLED",
-        "value": "false"
-      },
-      {
-        "name": "BROADCAST_DRIVER",
-        "value": "log"
-      }
-    ],
-    "secrets": [
-      {
-        "name": "APP_KEY",
-        "valueFrom": "/app/key"
-      },
-      {
-        "name": "DB_PASSWORD",
-        "valueFrom": "/db/password"
-      }
-    ],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "${var.project}-app",
-        "awslogs-region": "ap-northeast-1",
-        "awslogs-stream-prefix": "service"
-      }
-    }
-  },
-  {
-    "name": "nginx",
-    "image": "${aws_ecr_repository.nginx.repository_url}:latest",
-    "cpu": 50,
-    "memoryReservation": 100,
-    "essential": true,
-    "networkMode": "awsvpc",
-    "portMappings": [
-      {
-        "containerPort": 80,
-        "hostPort": 80
-      }
-    ],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "${var.project}-nginx",
-        "awslogs-region": "ap-northeast-1",
-        "awslogs-stream-prefix": "service"
-      }
-    }
+  container_definitions = data.template_file.ecs_app_task_definition.rendered
+}
+
+data "template_file" "ecs_app_task_definition" {
+  template = "${file("./templates/ecsTaskDefinition/app_task_definition.json")}"
+
+  vars = {
+    app_repo_url     = aws_ecr_repository.app.repository_url
+    network_mode     = "awsvpc",
+    command          = "",
+    db_host          = aws_db_instance.db.address
+    db_user_database = replace(var.project, "-", "_")
+    project          = var.project
+    redis_host       = aws_elasticache_cluster.main.cache_nodes.0.address
+    nginx_repo_url   = aws_ecr_repository.nginx.repository_url
   }
-]
-EOF
 }
 
 resource "aws_ecs_task_definition" "migrate" {
@@ -177,106 +53,20 @@ resource "aws_ecs_task_definition" "migrate" {
   task_role_arn      = aws_iam_role.ecs_task_role.arn
   execution_role_arn = aws_iam_role.ecs_task_role.arn
 
-  container_definitions = <<EOF
-[
-  {
-    "name": "app",
-    "image": "${aws_ecr_repository.app.repository_url}:latest",
-    "cpu": 300,
-    "memoryReservation": 300,
-    "essential": true,
-    "command": ["php", "artisan", "migrate", "--force"],
-    "portMappings": [
-      {
-        "containerPort": 9000,
-        "hostPort": 9000
-      }
-    ],
-    "environment": [
-      {
-        "name": "APP_ENV",
-        "value": "production"
-      },
-      {
-        "name": "APP_DEBUG",
-        "value": "true"
-      },
-      {
-        "name": "APP_NAME",
-        "value": "${var.project}"
-      },
-      {
-        "name": "APP_URL",
-        "value": "https://laravel-tweet-ddd.work"
-      },
-      {
-        "name": "ASSET_URL",
-        "value": "https://cdn.laravel-tweet-ddd.work"
-      },
-      {
-        "name": "DB_CONNECTION",
-        "value": "mysql"
-      },
-      {
-        "name": "DB_HOST",
-        "value": "${aws_db_instance.db.address}"
-      },
-      {
-        "name": "DB_PORT",
-        "value": "3306"
-      },
-      {
-        "name": "DB_USERNAME",
-        "value": "${replace(var.project, "-", "_")}"
-      },
-      {
-        "name": "DB_DATABASE",
-        "value": "${replace(var.project, "-", "_")}"
-      },
-      {
-        "name": "REDIS_HOST",
-        "value": "${aws_elasticache_cluster.main.cache_nodes.0.address}"
-      },
-      {
-        "name": "REDIS_PASSWORD",
-        "value": "null"
-      },
-      {
-        "name": "REDIS_PORT",
-        "value": "6379"
-      },
-      {
-        "name": "QUEUE_CONNECTION",
-        "value": "redis"
-      },
-      {
-        "name": "CACHE_DRIVER",
-        "value": "redis"
-      },
-      {
-        "name": "TELESCOPE_ENABLED",
-        "value": "false"
-      }
-    ],
-    "secrets": [
-      {
-        "name": "APP_KEY",
-        "valueFrom": "/app/key"
-      },
-      {
-        "name": "DB_PASSWORD",
-        "valueFrom": "/db/password"
-      }
-    ],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "${var.project}-app",
-        "awslogs-region": "ap-northeast-1",
-        "awslogs-stream-prefix": "service"
-      }
-    }
+  container_definitions = data.template_file.ecs_migrate_task_definition.rendered
+}
+
+data "template_file" "ecs_migrate_task_definition" {
+  template = "${file("./templates/ecsTaskDefinition/app_task_definition.json")}"
+
+  vars = {
+    app_repo_url     = aws_ecr_repository.app.repository_url
+    network_mode     = "bridge",
+    command          = "migrate"
+    db_host          = aws_db_instance.db.address
+    db_user_database = replace(var.project, "-", "_")
+    project          = var.project
+    redis_host       = aws_elasticache_cluster.main.cache_nodes.0.address
+    nginx_repo_url   = ""
   }
-]
-EOF
 }
