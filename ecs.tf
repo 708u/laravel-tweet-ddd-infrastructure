@@ -63,6 +63,10 @@ resource "aws_ecs_task_definition" "app" {
         "value": "https://laravel-tweet-ddd.work"
       },
       {
+        "name": "ASSET_URL",
+        "value": "https://cdn.laravel-tweet-ddd.work"
+      },
+      {
         "name": "DB_CONNECTION",
         "value": "mysql"
       },
