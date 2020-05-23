@@ -4,23 +4,17 @@ resource "aws_acm_certificate" "main" {
 
   subject_alternative_names = [var.domain]
 
-  lifecycle {
-    create_before_destroy = false
-  }
-
   tags = {
     Name = "${var.project}-cert"
   }
 }
 
 resource "aws_acm_certificate" "cdn" {
-  domain_name       = "cdn.${var.domain}"
+  domain_name       = "*.${var.domain}"
   validation_method = "DNS"
   provider          = aws.virginia
 
-  lifecycle {
-    create_before_destroy = false
-  }
+  subject_alternative_names = [var.domain]
 
   tags = {
     Name = "${var.project}-cdn-cert"
