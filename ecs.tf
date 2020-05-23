@@ -108,7 +108,15 @@ resource "aws_ecs_task_definition" "app" {
       },
       {
         "name": "CACHE_DRIVER",
-        "value": "redis"
+        "value": "file"
+      },
+      {
+        "name": "SESSION_DRIVER",
+        "value": "cookie"
+      },
+      {
+        "name": "SESSION_LIFETIME",
+        "value": "10080"
       },
       {
         "name": "TELESCOPE_ENABLED",
