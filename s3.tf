@@ -18,3 +18,30 @@ resource "aws_s3_bucket" "assets" {
     max_age_seconds = 4000
   }
 }
+
+resource "aws_s3_bucket_policy" "assets_policy" {
+  bucket = aws_s3_bucket.assets.id
+  policy = data.aws_iam_policy_document.asset_policy.json
+}
+
+data "aws_iam_policy_document" "asset_policy" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.assets.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.assets_origin_access_identity.iam_arn]
+    }
+  }
+
+  statement {
+    actions   = ["s3:ListBucket"]
+    resources = ["${aws_s3_bucket.assets.arn}"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.assets_origin_access_identity.iam_arn]
+    }
+  }
+}
