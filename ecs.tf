@@ -87,6 +87,10 @@ resource "aws_ecs_task_definition" "app" {
         "value": "${replace(var.project, "-", "_")}"
       },
       {
+        "name": "LOG_CHANNEL",
+        "value": "stack"
+      },
+      {
         "name": "REDIS_HOST",
         "value": "${aws_elasticache_cluster.main.cache_nodes.0.address}"
       },
@@ -109,6 +113,10 @@ resource "aws_ecs_task_definition" "app" {
       {
         "name": "TELESCOPE_ENABLED",
         "value": "false"
+      },
+      {
+        "name": "BROADCAST_DRIVER",
+        "value": "log"
       }
     ],
     "secrets": [
