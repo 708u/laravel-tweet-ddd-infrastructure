@@ -26,6 +26,23 @@ resource "aws_route53_record" "cdn_alias" {
   }
 }
 
+resource "aws_route53_record" "ses_txt_record" {
+  zone_id = aws_route53_zone.main.id
+  name    = "_amazonses.${aws_route53_zone.main.name}"
+  type    = "TXT"
+  ttl     = "600"
+  records = [aws_ses_domain_identity.ses.verification_token]
+}
+
+resource "aws_route53_record" "ses_dkim_records" {
+  count   = 3
+  zone_id = aws_route53_zone.main.id
+  name    = "${element(aws_ses_domain_dkim.dkim.dkim_tokens, count.index)}._domainkey.${var.domain}"
+  type    = "CNAME"
+  ttl     = "600"
+  records = ["${element(aws_ses_domain_dkim.dkim.dkim_tokens, count.index)}.dkim.amazonses.com"]
+}
+
 resource "aws_route53_record" "validation" {
   depends_on = [aws_acm_certificate.main]
   zone_id    = aws_route53_zone.main.id
