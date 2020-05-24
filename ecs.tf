@@ -37,14 +37,15 @@ data "template_file" "ecs_app_task_definition" {
   template = file("./templates/ecsTaskDefinition/app_task_definition.json")
 
   vars = {
-    app_repo_url     = aws_ecr_repository.app.repository_url
-    network_mode     = "awsvpc",
-    command          = "",
-    db_host          = aws_db_instance.db.address
-    db_user_database = replace(var.project, "-", "_")
-    project          = var.project
-    redis_host       = aws_elasticache_cluster.main.cache_nodes.0.address
-    nginx_repo_url   = aws_ecr_repository.nginx.repository_url
+    app_repo_url              = aws_ecr_repository.app.repository_url
+    network_mode              = "awsvpc",
+    command                   = "",
+    db_host                   = aws_db_instance.db.address
+    db_user_database          = replace(var.project, "-", "_")
+    app-awslogs-stream-prefix = "app"
+    project                   = var.project
+    redis_host                = aws_elasticache_cluster.main.cache_nodes.0.address
+    nginx_repo_url            = aws_ecr_repository.nginx.repository_url
   }
 }
 
@@ -60,13 +61,14 @@ data "template_file" "ecs_migrate_task_definition" {
   template = file("./templates/ecsTaskDefinition/app_task_definition.json")
 
   vars = {
-    app_repo_url     = aws_ecr_repository.app.repository_url
-    network_mode     = "bridge",
-    command          = "migrate"
-    db_host          = aws_db_instance.db.address
-    db_user_database = replace(var.project, "-", "_")
-    project          = var.project
-    redis_host       = aws_elasticache_cluster.main.cache_nodes.0.address
-    nginx_repo_url   = ""
+    app_repo_url              = aws_ecr_repository.app.repository_url
+    network_mode              = "bridge",
+    command                   = "migrate"
+    db_host                   = aws_db_instance.db.address
+    db_user_database          = replace(var.project, "-", "_")
+    app-awslogs-stream-prefix = "migration"
+    project                   = var.project
+    redis_host                = aws_elasticache_cluster.main.cache_nodes.0.address
+    nginx_repo_url            = ""
   }
 }
