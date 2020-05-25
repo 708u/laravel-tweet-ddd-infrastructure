@@ -32,11 +32,15 @@
       },
       {
         "name": "APP_URL",
-        "value": "https://laravel-tweet-ddd.work"
+        "value": "https://${domain}"
       },
       {
         "name": "ASSET_URL",
-        "value": "https://cdn.laravel-tweet-ddd.work"
+        "value": "https://cdn.${domain}"
+      },
+      {
+        "name": "AWS_SES_DEFAULT_REGION",
+        "value": "us-east-1"
       },
       {
         "name": "DB_CONNECTION",
@@ -63,8 +67,20 @@
         "value": "stack"
       },
       {
+        "name": "MAIL_MAILER",
+        "value": "ses"
+      },
+      {
+        "name": "MAIL_FROM_ADDRESS",
+        "value": "no-reply@${domain}"
+      },
+      {
+        "name": "MAIL_FROM_NAME",
+        "value": "${project}"
+      },
+      {
         "name": "REDIS_HOST",
-        "value": "{redis_host}"
+        "value": "${redis_host}"
       },
       {
         "name": "REDIS_PASSWORD",
