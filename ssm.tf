@@ -19,3 +19,15 @@ resource "aws_ssm_parameter" "db_password" {
     ignore_changes = [value]
   }
 }
+
+variable "slack_webhook_url" {}
+resource "aws_ssm_parameter" "slack_webhook_url" {
+  name        = "/app/slack-webhook-url"
+  value       = var.slack_webhook_url
+  type        = "SecureString"
+  description = "Slack webhook url"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}

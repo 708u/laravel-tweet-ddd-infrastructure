@@ -64,7 +64,7 @@
       },
       {
         "name": "LOG_CHANNEL",
-        "value": "stack"
+        "value": "slack"
       },
       {
         "name": "MAIL_MAILER",
@@ -123,6 +123,10 @@
       {
         "name": "DB_PASSWORD",
         "valueFrom": "/db/password"
+      },
+      {
+        "name": "LOG_SLACK_WEBHOOK_URL",
+        "valueFrom": "/app/slack-webhook-url"
       }
     ],
     "logConfiguration": {
