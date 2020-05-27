@@ -11,13 +11,12 @@ resource "aws_lb_target_group" "web" {
   name        = "${var.project}-alb-tg"
   port        = 80
   protocol    = "HTTP"
-  target_type = "ip"
   vpc_id      = aws_vpc.main.id
 
   health_check {
     interval            = 30
     path                = "/healthcheck"
-    port                = 80
+    port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = 10
     healthy_threshold   = 3

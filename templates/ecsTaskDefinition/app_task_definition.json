@@ -11,12 +11,6 @@
       "php", "artisan", "migrate", "--force"
 %{ endif }
     ],
-    "portMappings": [
-      {
-        "containerPort": 9000,
-        "hostPort": 9000
-      }
-    ],
     "environment": [
       {
         "name": "APP_ENV",
@@ -69,6 +63,10 @@
       {
         "name": "MAIL_MAILER",
         "value": "ses"
+      },
+      {
+        "name": "MAIL_ENCRYPTION",
+        "value": "tls"
       },
       {
         "name": "MAIL_FROM_ADDRESS",
@@ -145,12 +143,15 @@
     "cpu": 50,
     "memoryReservation": 100,
     "essential": true,
-    "networkMode": "awsvpc",
+    "networkMode": "bridge",
     "portMappings": [
       {
         "containerPort": 80,
         "hostPort": 80
       }
+    ],
+    "links" : [
+      "app:app"
     ],
     "logConfiguration": {
       "logDriver": "awslogs",

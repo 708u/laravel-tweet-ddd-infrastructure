@@ -12,10 +12,12 @@ resource "aws_ecs_service" "app_service" {
   deployment_minimum_healthy_percent = 0
   deployment_maximum_percent         = 100
 
-  network_configuration {
-    security_groups = [aws_security_group.web.id]
-    subnets         = [aws_subnet.public_subnet_1a.id]
-  }
+  # for awsvpc settins
+  # network_configuration {
+  #   security_groups = [aws_security_group.web.id]
+  #   subnets         = [aws_subnet.public_subnet_1a.id]
+  #   assign_public_ip = true
+  # }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.web.arn
@@ -28,7 +30,7 @@ resource "aws_ecs_task_definition" "app" {
   family             = "${var.project}-app"
   task_role_arn      = aws_iam_role.ecs_task_role.arn
   execution_role_arn = aws_iam_role.ecs_task_role.arn
-  network_mode       = "awsvpc"
+  network_mode       = "bridge"
 
   container_definitions = data.template_file.ecs_app_task_definition.rendered
 }
@@ -38,7 +40,7 @@ data "template_file" "ecs_app_task_definition" {
 
   vars = {
     app_repo_url              = aws_ecr_repository.app.repository_url
-    network_mode              = "awsvpc",
+    network_mode              = "bridge",
     command                   = "",
     domain                    = var.domain
     db_host                   = aws_db_instance.db.address
