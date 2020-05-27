@@ -19,6 +19,3 @@ jobs:
 
       # Determine if all tf files are formatted
       - run: terraform fmt -check
-
-      # Determine if terraform can apply plan
-      - run: terraform plan
