@@ -12,7 +12,7 @@
 ## Architecture overview
 
 <p align="center">
-    <img width="55%" src="https://user-images.githubusercontent.com/43739514/82997718-b3ea0c00-a041-11ea-8f46-42936edf80be.png">
+    <img width="80%" src="https://user-images.githubusercontent.com/43739514/82998236-70dc6880-a042-11ea-8bd9-d8dbb23f4af3.png">
 </p>
 
 ## Installation
