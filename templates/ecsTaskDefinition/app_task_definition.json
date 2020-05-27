@@ -94,11 +94,11 @@
       },
       {
         "name": "CACHE_DRIVER",
-        "value": "file"
+        "value": "redis"
       },
       {
         "name": "SESSION_DRIVER",
-        "value": "cookie"
+        "value": "redis"
       },
       {
         "name": "SESSION_LIFETIME",

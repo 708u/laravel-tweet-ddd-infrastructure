@@ -7,6 +7,9 @@ resource "aws_elasticache_cluster" "main" {
   port                 = 6379
   parameter_group_name = "default.redis5.0"
   subnet_group_name    = aws_elasticache_subnet_group.main.name
+  security_group_ids = [
+    aws_security_group.private_elasticache.id
+  ]
 }
 
 resource "aws_elasticache_subnet_group" "main" {
