@@ -15,6 +15,8 @@
     <img src="https://user-images.githubusercontent.com/43739514/82998236-70dc6880-a042-11ea-8bd9-d8dbb23f4af3.png">
 </p>
 
+- AWS無料枠に収まる範囲内で構築となるため、マルチAZなど、冗長化構成は取っておりません。
+
 ## Installation
 
 - 公式の docker イメージを使って terraform を実行しているため、docker と docker-comopse をインストールしてください
