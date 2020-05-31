@@ -32,11 +32,34 @@ data "aws_iam_policy_document" "ecs_assume_role_policy" {
   }
 }
 
+data "aws_iam_policy_document" "ecr_policy" {
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetRepositoryPolicy",
+      "ecr:DescribeRepositories",
+      "ecr:ListImages",
+      "ecr:DescribeImages",
+      "ecr:BatchGetImage",
+      "ecr:InitiateLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload",
+      "ecr:PutImage"
+    ]
+  }
+}
+
 data "aws_iam_policy_document" "ecs_task_policy" {
   statement {
     effect    = "Allow"
     resources = ["*"]
-    actions   = [
+
+    actions = [
       "ecs:CreateCluster",
       "ecs:DeregisterContainerInstance",
       "ecs:DiscoverPollEndpoint",

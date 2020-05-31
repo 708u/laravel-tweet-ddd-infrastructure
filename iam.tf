@@ -7,7 +7,7 @@ resource "aws_iam_policy" "deploy" {
   name        = "deploy"
   path        = "/"
   description = "deploy policy"
-  policy      = file("policies/iam/ecr_policy.json")
+  policy      = data.aws_iam_policy_document.ecr_policy.json
 }
 
 resource "aws_iam_user_policy_attachment" "deploy_attach" {
