@@ -17,3 +17,7 @@ resource "aws_elasticache_subnet_group" "main" {
   description = "${var.project}-cache-subnet"
   subnet_ids  = [aws_subnet.private_elasticache_1a.id, aws_subnet.private_elasticache_1c.id]
 }
+
+data "aws_iam_policy_document" "test" {
+
+}
