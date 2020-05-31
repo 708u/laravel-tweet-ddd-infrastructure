@@ -1,5 +1,3 @@
-variable "db_password" {}
-
 resource "aws_db_subnet_group" "private_db" {
   name       = "${var.project}-db-group"
   subnet_ids = [aws_subnet.private_db_1a.id, aws_subnet.private_db_1c.id]
