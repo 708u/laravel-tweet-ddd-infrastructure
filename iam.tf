@@ -31,7 +31,7 @@ resource "aws_iam_policy" "ecs_instance_policy" {
   name        = "ecs-instance-policy"
   path        = "/"
   description = ""
-  policy      = file("policies/iam/ecs_instance_policy.json")
+  policy      = data.aws_iam_policy_document.ecs_task_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_instance_role_attach" {
@@ -50,7 +50,7 @@ resource "aws_iam_policy" "ecs_task_policy" {
   name        = "ecs-task-policy"
   path        = "/"
   description = ""
-  policy      = file("policies/iam/ecs_task_policy.json")
+  policy      = data.aws_iam_policy_document.ecs_task_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_role_attach" {
