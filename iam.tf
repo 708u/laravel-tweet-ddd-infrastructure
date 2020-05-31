@@ -19,7 +19,7 @@ resource "aws_iam_user_policy_attachment" "deploy_attach" {
 resource "aws_iam_role" "ecs_instance_role" {
   name               = "ecs_instance_role"
   path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role_policy.json
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
 }
 
 resource "aws_iam_instance_profile" "ecs_profile" {
@@ -43,7 +43,7 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_role_attach" {
 resource "aws_iam_role" "ecs_task_role" {
   name               = "ecs-task-role"
   path               = "/"
-  assume_role_policy = file("policies/iam/ecs_task_assume_role_policy.json")
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
 }
 
 resource "aws_iam_policy" "ecs_task_policy" {
