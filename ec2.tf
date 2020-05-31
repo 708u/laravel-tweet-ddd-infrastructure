@@ -4,7 +4,7 @@ resource "aws_instance" "main" {
   monitoring                  = true
   subnet_id                   = aws_subnet.public_subnet_1a.id
   iam_instance_profile        = aws_iam_instance_profile.ecs_profile.name
-  user_data                   = file("./user_data.sh")
+  user_data                   = file("./templates/init/user_data.sh")
   associate_public_ip_address = true
   key_name                    = aws_key_pair.instance_ssh.id
   vpc_security_group_ids      = [aws_security_group.web.id]
@@ -21,5 +21,5 @@ resource "aws_instance" "main" {
 
 resource "aws_key_pair" "instance_ssh" {
   key_name   = "${var.project}-ssh-key"
-  public_key = file("./ssh_key/public_Key")
+  public_key = file("./templates/sshKey/public_Key")
 }
