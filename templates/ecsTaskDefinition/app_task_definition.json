@@ -33,6 +33,14 @@
         "value": "https://cdn.${domain}"
       },
       {
+        "name": "AWS_DEFAULT_REGION",
+        "value": "us-east-1"
+      },
+      {
+        "name": "AWS_BUCKET",
+        "value": "${s3_bucket}"
+      },
+      {
         "name": "AWS_SES_DEFAULT_REGION",
         "value": "us-east-1"
       },

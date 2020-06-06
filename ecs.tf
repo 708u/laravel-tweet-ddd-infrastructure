@@ -47,6 +47,7 @@ data "template_file" "ecs_app_task_definition" {
     db_user_database          = replace(var.project, "-", "_")
     app-awslogs-stream-prefix = "app"
     project                   = var.project
+    s3_bucket                 = "${var.project}-public"
     redis_host                = aws_elasticache_cluster.main.cache_nodes.0.address
     nginx_repo_url            = aws_ecr_repository.nginx.repository_url
   }
@@ -72,6 +73,7 @@ data "template_file" "ecs_migrate_task_definition" {
     db_user_database          = replace(var.project, "-", "_")
     app-awslogs-stream-prefix = "migration"
     project                   = var.project
+    s3_bucket                 = "${var.project}-public"
     redis_host                = aws_elasticache_cluster.main.cache_nodes.0.address
     nginx_repo_url            = ""
   }
