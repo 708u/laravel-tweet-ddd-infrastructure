@@ -74,6 +74,7 @@ data "aws_iam_policy_document" "ecs_task_policy" {
       "ecr:BatchGetImage",
       "ssm:GetParameters",
       "secretsmanager:GetSecretValue",
+      "kms:Decrypt",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
       "ses:SendEmail",
